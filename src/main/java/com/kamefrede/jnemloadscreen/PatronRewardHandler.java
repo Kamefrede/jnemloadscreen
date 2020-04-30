@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -26,7 +27,7 @@ import java.util.WeakHashMap;
 @Mod.EventBusSubscriber(modid = JNEMLoadscreen.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PatronRewardHandler {
 
-	private static volatile Set<String> patrons  = Collections.newSetFromMap(new WeakHashMap<>());
+	private static volatile Set<String> patrons  = Collections.newSetFromMap(new HashMap<>());
 	private static final Set<String> done = Collections.newSetFromMap(new WeakHashMap<>());
 	private static boolean startedLoading = false;
 
@@ -35,6 +36,10 @@ public class PatronRewardHandler {
 			new ThreadContributorListLoader();
 			startedLoading = true;
 		}
+	}
+
+	public static void load(Properties props){
+		patrons.addAll(props.stringPropertyNames());
 	}
 
 	@SubscribeEvent
@@ -72,6 +77,7 @@ public class PatronRewardHandler {
 				try (InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
 					props.load(reader);
 					props.forEach((k, v) -> patrons.add((String)k));
+					load(props);
 				}
 			} catch (IOException e) {
 				JNEMLoadscreen.LOGGER.info("Could not load patron list. Either you're offline or github is down. Nothing to worry about, carry on~");
