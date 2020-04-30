@@ -3,7 +3,7 @@ package com.kamefrede.jnemloadscreen;
 import net.minecraft.client.gui.ResourceLoadProgressGui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -30,6 +30,7 @@ public class JNEMLoadscreen {
 		});
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	private void clientSetup(FMLClientSetupEvent event){
 		PatronRewardHandler.firstStart();
 	}

@@ -22,24 +22,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.WeakHashMap;
+
 
 @Mod.EventBusSubscriber(modid = JNEMLoadscreen.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PatronRewardHandler {
 
 	private static volatile Set<String> patrons  = Collections.newSetFromMap(new HashMap<>());
-	private static final Set<String> done = Collections.newSetFromMap(new WeakHashMap<>());
 	private static boolean startedLoading = false;
 
 	public static void firstStart() {
 		if (!startedLoading) {
-			new ThreadContributorListLoader();
+			new ThreadPatreonListLoader();
 			startedLoading = true;
 		}
 	}
 
 	public static void load(Properties props){
 		patrons.addAll(props.stringPropertyNames());
+		patrons.add("Dev");
 	}
 
 	@SubscribeEvent
@@ -47,22 +47,23 @@ public class PatronRewardHandler {
 	public static void onRenderPlayer(RenderPlayerEvent.Post event) {
 		PlayerEntity player = event.getPlayer();
 		String playerName = player.getGameProfile().getName();
-		if(player instanceof AbstractClientPlayerEntity && patrons.contains(playerName) && !done.contains(playerName)) {
+		if(player instanceof AbstractClientPlayerEntity && patrons.contains(playerName)) {
 			AbstractClientPlayerEntity clientPlayer = (AbstractClientPlayerEntity) player;
 			if(clientPlayer.hasPlayerInfo()) {
 				NetworkPlayerInfo info = ((AbstractClientPlayerEntity) player).playerInfo;
 				Map<MinecraftProfileTexture.Type, ResourceLocation> textures = info.playerTextures;
 				ResourceLocation loc = new ResourceLocation(JNEMLoadscreen.MOD_ID, "textures/misc/patron_cape.png");
-				textures.put(MinecraftProfileTexture.Type.CAPE, loc);
-				textures.put(MinecraftProfileTexture.Type.ELYTRA, loc);
-				done.add(playerName);
+				if(!(textures.get(MinecraftProfileTexture.Type.CAPE) == loc || textures.get(MinecraftProfileTexture.Type.ELYTRA) == loc)){
+					textures.put(MinecraftProfileTexture.Type.CAPE, loc);
+					textures.put(MinecraftProfileTexture.Type.ELYTRA, loc);
+				}
 			}
 		}
 	}
 
-	private static class ThreadContributorListLoader extends Thread {
+	private static class ThreadPatreonListLoader extends Thread {
 
-		public ThreadContributorListLoader() {
+		public ThreadPatreonListLoader() {
 			setName("JNEM Patron list handler");
 			setDaemon(true);
 			setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(JNEMLoadscreen.LOGGER));
