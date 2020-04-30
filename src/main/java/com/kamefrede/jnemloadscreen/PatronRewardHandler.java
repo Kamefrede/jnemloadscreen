@@ -37,11 +37,6 @@ public class PatronRewardHandler {
 		}
 	}
 
-	public static void load(Properties props){
-		patrons.addAll(props.stringPropertyNames());
-		patrons.add("Dev");
-	}
-
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onRenderPlayer(RenderPlayerEvent.Post event) {
@@ -78,7 +73,7 @@ public class PatronRewardHandler {
 				try (InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
 					props.load(reader);
 					props.forEach((k, v) -> patrons.add((String)k));
-					load(props);
+					patrons.addAll(props.stringPropertyNames());
 				}
 			} catch (IOException e) {
 				JNEMLoadscreen.LOGGER.info("Could not load patron list. Either you're offline or github is down. Nothing to worry about, carry on~");
