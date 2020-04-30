@@ -1,0 +1,18 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/Kamefrede/jnemloadscreen"
+
+[[mods]]
+modId="jnemloadscreen"
+displayName="JNEM Loadscreen"
+version="1.0.0.0"
+authors="Kamefrede, Boomflex"
+description='''
+Just Not Enough Mods 2 Loadscreen Mod!
+'''
+[[dependencies.jnemloadscreen]]
+    modId="forge"
+    mandatory=true
+    versionRange="[28.1.0,)"
+    ordering="AFTER"
+    side="BOTH"
