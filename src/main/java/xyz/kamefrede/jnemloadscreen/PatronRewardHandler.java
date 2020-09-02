@@ -1,4 +1,4 @@
-package com.kamefrede.jnemloadscreen;
+package xyz.kamefrede.jnemloadscreen;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 

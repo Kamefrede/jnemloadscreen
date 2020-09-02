@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "package": "xyz.kamefrede.jnemloadscreen.mixin",
+  "refmap": "jnemloadscreen.refmap.json",
+  "mixins": [
+    "MixinResourceLoadProgressGui"
+  ],
+  "client": [
+    "MixinResourceLoadProgressGui"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
